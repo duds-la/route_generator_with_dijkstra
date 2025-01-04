@@ -3,7 +3,7 @@ from dijkstra import dijkstra
 from maps_api import GoogleMapsAPI
 
 # Configuração da API do Google Maps
-API_KEY = "AIzaSyA_SBl7x_oJ7flj6e_6lvSZA0livUPD7R4"
+API_KEY = "teste"
 maps_api = GoogleMapsAPI(API_KEY)
 
 # Interface do Streamlit
