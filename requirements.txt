@@ -1,0 +1,6 @@
+python-dotenv
+ipykernel
+streamlit
+googlemaps
+networkx
+pandas
