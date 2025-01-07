@@ -64,30 +64,47 @@ api_key = st.text_input("Insira sua chave da API do Google Maps:", type="passwor
 
 # Entradas do usuário
 start_point = st.text_input("Ponto de Partida:")
-intermediate_point_1 = st.text_input("Ponto Intermediário 1:")
-intermediate_point_2 = st.text_input("Ponto Intermediário 2:")
 end_point = st.text_input("Ponto de Chegada:")
 
+# Configurar pontos intermediários
+st.write("### Pontos Intermediários")
+if "num_intermediate_points" not in st.session_state:
+    st.session_state.num_intermediate_points = 1  # Começa com 1 ponto intermediário
+
+# Botões para adicionar/remover pontos intermediários
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("Adicionar Parada"):
+        if st.session_state.num_intermediate_points < 7:
+            st.session_state.num_intermediate_points += 1
+with col2:
+    if st.button("Remover Parada"):
+        if st.session_state.num_intermediate_points > 1:
+            st.session_state.num_intermediate_points -= 1
+
+# Campos de entrada para pontos intermediários
+intermediate_points = []
+for i in range(st.session_state.num_intermediate_points):
+    intermediate_point = st.text_input(f"Parada Intermediária {i + 1}:")
+    intermediate_points.append(intermediate_point)
+
+# Botão para calcular rota
 if st.button("Calcular Rota"):
-    if not all([api_key, start_point, intermediate_point_1, intermediate_point_2, end_point]):
+    if not all([api_key, start_point, end_point] + intermediate_points):
         st.warning("Por favor, insira todos os endereços e a chave da API.")
     else:
         # Obter endereços formatados
-        addresses = [
-            get_address_from_api(start_point, api_key),
-            get_address_from_api(intermediate_point_1, api_key),
-            get_address_from_api(intermediate_point_2, api_key),
-            get_address_from_api(end_point, api_key)
-        ]
+        addresses = [start_point] + intermediate_points + [end_point]
+        formatted_addresses = [get_address_from_api(addr, api_key) for addr in addresses]
 
-        if None in addresses:
+        if None in formatted_addresses:
             st.error("Erro ao processar os endereços. Verifique os valores inseridos.")
         else:
             # Construir o grafo com a matriz de distâncias
-            graph = get_distance_matrix(addresses, api_key)
+            graph = get_distance_matrix(formatted_addresses, api_key)
             if graph:
                 # Calcular todas as rotas possíveis
-                routes = list(permutations(addresses))
+                routes = list(permutations(formatted_addresses))
                 shortest_route = None
                 shortest_distance = float('inf')
 
