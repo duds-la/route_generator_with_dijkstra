@@ -1,0 +1,209 @@
+{
+    "destination_addresses": [
+        "Av. Paulista, São Paulo - SP, Brazil",
+        "R. Augusta, São Paulo - SP, Brazil",
+        "Praça da Sé - Se, São Paulo - SP, 01001-000, Brazil",
+        "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil"
+    ],
+    "origin_addresses": [
+        "Av. Paulista, São Paulo - SP, Brazil",
+        "R. Augusta, São Paulo - SP, Brazil",
+        "Praça da Sé - Se, São Paulo - SP, 01001-000, Brazil",
+        "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil"
+    ],
+    "rows": [
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "0.7 km",
+                        "value": 697
+                    },
+                    "duration": {
+                        "text": "3 mins",
+                        "value": 200
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "4.1 km",
+                        "value": 4085
+                    },
+                    "duration": {
+                        "text": "12 mins",
+                        "value": 696
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "8.1 km",
+                        "value": 8081
+                    },
+                    "duration": {
+                        "text": "14 mins",
+                        "value": 814
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "1.6 km",
+                        "value": 1622
+                    },
+                    "duration": {
+                        "text": "7 mins",
+                        "value": 429
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "3.9 km",
+                        "value": 3875
+                    },
+                    "duration": {
+                        "text": "15 mins",
+                        "value": 905
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "5.1 km",
+                        "value": 5053
+                    },
+                    "duration": {
+                        "text": "16 mins",
+                        "value": 969
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "3.9 km",
+                        "value": 3871
+                    },
+                    "duration": {
+                        "text": "10 mins",
+                        "value": 570
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "3.9 km",
+                        "value": 3942
+                    },
+                    "duration": {
+                        "text": "12 mins",
+                        "value": 701
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "6.1 km",
+                        "value": 6094
+                    },
+                    "duration": {
+                        "text": "10 mins",
+                        "value": 617
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "4.6 km",
+                        "value": 4559
+                    },
+                    "duration": {
+                        "text": "14 mins",
+                        "value": 826
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "6.4 km",
+                        "value": 6374
+                    },
+                    "duration": {
+                        "text": "17 mins",
+                        "value": 1025
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "5.8 km",
+                        "value": 5803
+                    },
+                    "duration": {
+                        "text": "10 mins",
+                        "value": 603
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 m",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 min",
+                        "value": 0
+                    },
+                    "status": "OK"
+                }
+            ]
+        }
+    ],
+    "status": "OK"
+}

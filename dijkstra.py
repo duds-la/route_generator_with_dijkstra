@@ -4,8 +4,8 @@ def dijkstra(graph, start, end):
     # Inicialização
     queue = [(0, start)]  # Fila de prioridade: (distância acumulada, nó atual)
     distances = {node: float('inf') for node in graph}  # Distâncias iniciais infinitas
-    distances[start] = 0
-    visited = {}
+    distances[start] = 0  # Distância do ponto inicial é 0
+    visited = set()
 
     while queue:
         current_distance, current_node = heapq.heappop(queue)
@@ -15,7 +15,7 @@ def dijkstra(graph, start, end):
             continue
 
         # Marcar como visitado
-        visited[current_node] = current_distance
+        visited.add(current_node)
 
         # Checar os vizinhos
         for neighbor, weight in graph[current_node].items():
@@ -24,4 +24,5 @@ def dijkstra(graph, start, end):
                 distances[neighbor] = distance
                 heapq.heappush(queue, (distance, neighbor))
 
-    return distances, visited
+    # Retorna a distância final
+    return distances[end]

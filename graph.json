@@ -1,0 +1,22 @@
+{
+    "Av. Paulista, São Paulo - SP, Brazil": {
+        "R. Augusta, São Paulo - SP, Brazil": 697,
+        "Praça da Sé - Se, São Paulo - SP, 01001-000, Brazil": 4085,
+        "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil": 8081
+    },
+    "R. Augusta, São Paulo - SP, Brazil": {
+        "Av. Paulista, São Paulo - SP, Brazil": 1622,
+        "Praça da Sé - Se, São Paulo - SP, 01001-000, Brazil": 3875,
+        "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil": 5053
+    },
+    "Praça da Sé - Se, São Paulo - SP, 01001-000, Brazil": {
+        "Av. Paulista, São Paulo - SP, Brazil": 3871,
+        "R. Augusta, São Paulo - SP, Brazil": 3942,
+        "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil": 6094
+    },
+    "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil": {
+        "Av. Paulista, São Paulo - SP, Brazil": 4559,
+        "R. Augusta, São Paulo - SP, Brazil": 6374,
+        "Praça da Sé - Se, São Paulo - SP, 01001-000, Brazil": 5803
+    }
+}

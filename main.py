@@ -1,59 +1,87 @@
 import streamlit as st
+import requests
+import json
+from itertools import permutations
 from dijkstra import dijkstra
-from maps_api import GoogleMapsAPI
 
-# Configuração da API do Google Maps
-API_KEY = "teste"
-maps_api = GoogleMapsAPI(API_KEY)
+# Função para salvar dados em JSON
+def save_to_json(data, filename):
+    """Salva os dados no formato JSON."""
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
-# Interface do Streamlit
-st.title("Planejador de Rotas com Dijkstra e Google Maps")
-st.sidebar.header("Configurações")
+# Função para calcular a distância total de uma rota
+def calculate_total_distance(graph, route):
+    total_distance = 0
+    for i in range(len(route) - 1):
+        origin = route[i]
+        destination = route[i + 1]
+        total_distance += graph[origin][destination]
+    return total_distance
 
-# Pontos fixos para depuração
-st.write("### Pontos Fixos para Depuração:")
-origin = "Av. Paulista, São Paulo"
-point1 = "Rua Augusta, São Paulo"
-point2 = "Praça da Sé, São Paulo"
-destination = "Parque Ibirapuera, São Paulo"
+# Configuração da página
+st.title("Algoritmo de Rota com Menor Distância")
+st.write("Selecione até 3 pontos e encontre a rota mais curta.")
 
-st.write(f"- **Origem**: {origin}")
-st.write(f"- **Ponto Intermediário 1**: {point1}")
-st.write(f"- **Ponto Intermediário 2**: {point2}")
-st.write(f"- **Destino**: {destination}")
+# Pontos fixos
+addresses = [
+    "Av. Paulista, São Paulo - SP, Brazil",
+    "R. Augusta, São Paulo - SP, Brazil",
+    "Praça da Sé, São Paulo - SP, Brazil",
+    "Ibirapuera Park - Av. Pedro Álvares Cabral - Vila Mariana, São Paulo - SP, 04094-050, Brazil"
+]
 
-# Obter matriz de distâncias
-points = [origin, point1, point2, destination]
-response = maps_api.get_distance_matrix(points, points)
+# Configurações da API
+api_key = "AIzaSyA_SBl7x_oJ7flj6e_6lvSZA0livUPD7R4"  # Substitua pela sua chave de API do Google Maps
+url = "https://maps.googleapis.com/maps/api/distancematrix/json"
 
-# Depuração da resposta da API
-st.write("### Debug da Resposta da API:")
-st.json(response)
+params = {
+    "origins": "|".join(addresses),
+    "destinations": "|".join(addresses),
+    "key": api_key
+}
 
-# Construir grafo a partir da resposta
+# Obter resposta da API
+response = requests.post(url, params=params).json()
+
+# Salvar resposta no arquivo response.json
+save_to_json(response, "response.json")
+
+st.write("Resposta da API salva no arquivo 'response.json'.")
+
+# Construir grafo a partir da resposta da API
 graph = {}
-for i, origin in enumerate(points):
-    graph[origin] = {}
-    for j, destination in enumerate(points):
-        try:
-            element = response["rows"][i]["elements"][j]
-            distance = element.get("distance", {}).get("value", float('inf'))
-            graph[origin][destination] = distance
-        except KeyError:
-            st.error(f"Erro ao processar a distância entre {origin} e {destination}.")
+for i, origin_address in enumerate(response["origin_addresses"]):
+    graph[origin_address] = {}
+    for j, destination_address in enumerate(response["destination_addresses"]):
+        element = response["rows"][i]["elements"][j]
+        distance = element.get("distance", {}).get("value", float('inf'))
+        if distance != float('inf') and i != j:
+            graph[origin_address][destination_address] = distance
 
-# Exibir o grafo construído
-st.write("### Grafo de Distâncias:")
-st.json(graph)
+# Salvar grafo no arquivo graph.json
+save_to_json(graph, "graph.json")
 
-# Calcular rota com Dijkstra
-start_point = origin
-end_point = destination
+st.write("Grafo salvo no arquivo 'graph.json'.")
 
-if end_point in graph:
-    distances, visited = dijkstra(graph, start_point, end_point)
-    total_distance = distances.get(end_point, float('inf'))
-    st.write("### Resultado:")
-    st.write(f"**Distância Total:** {total_distance} metros")
+# Seleção de múltiplos pontos
+selected_points = st.multiselect("Selecione até 3 pontos:", addresses, default=addresses[:2])
+
+if len(selected_points) < 2:
+    st.warning("Selecione pelo menos 2 pontos para formar uma rota.")
 else:
-    st.error("Destino não encontrado no grafo.")
+    # Calcular todas as rotas possíveis
+    routes = list(permutations(selected_points))
+    shortest_route = None
+    shortest_distance = float('inf')
+
+    for route in routes:
+        total_distance = calculate_total_distance(graph, route)
+        if total_distance < shortest_distance:
+            shortest_distance = total_distance
+            shortest_route = route
+
+    # Exibir os resultados
+    st.write("### Melhor Rota:")
+    st.write(" -> ".join(shortest_route))
+    st.write(f"**Distância Total:** {shortest_distance} metros")
