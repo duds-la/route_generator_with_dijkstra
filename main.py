@@ -55,6 +55,13 @@ def get_distance_matrix(addresses, api_key):
                 graph[origin_address][destination_address] = distance
     return graph
 
+# Função para gerar a URL do Google Maps
+def generate_google_maps_url(route):
+    """Gera uma URL para exibir a rota no Google Maps."""
+    base_url = "https://www.google.com/maps/dir/"
+    encoded_route = "/".join(route)
+    return base_url + encoded_route
+
 # Configuração da página
 st.title("Calculador de Rota com Dijkstra")
 st.write("Insira os endereços e encontre a rota mais curta.")
@@ -118,3 +125,19 @@ if st.button("Calcular Rota"):
                 st.write("### Melhor Rota:")
                 st.write(" -> ".join(shortest_route))
                 st.write(f"**Distância Total:** {shortest_distance} metros")
+
+                # Gerar URL do Google Maps
+                maps_url = generate_google_maps_url(shortest_route)
+
+                # Botão com o ícone do Google Maps
+                st.markdown(
+                    f"""
+                    <a href="{maps_url}" target="_blank" style="text-decoration:none;">
+                        <button style="background-color:#4285F4; color:white; border:none; padding:10px 20px; border-radius:5px; font-size:16px; cursor:pointer; display:flex; align-items:center;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Google_Maps_icon_%282020%29.svg" alt="Google Maps" style="width:20px; height:20px; margin-right:10px;">
+                            Abrir no Google Maps
+                        </button>
+                    </a>
+                    """,
+                    unsafe_allow_html=True
+                )
