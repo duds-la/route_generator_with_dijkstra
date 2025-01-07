@@ -2,7 +2,8 @@ import streamlit as st
 import requests
 import json
 from itertools import permutations
-from dijkstra import dijkstra
+import folium
+from streamlit_folium import st_folium
 
 # Função para salvar dados em JSON
 def save_to_json(data, filename):
@@ -19,14 +20,18 @@ def calculate_total_distance(graph, route):
         total_distance += graph[origin][destination]
     return total_distance
 
-# Função para obter endereço formatado da API Geocoding
+# Função para obter endereço formatado e coordenadas da API Geocoding
 def get_address_from_api(address, api_key):
     geocode_url = "https://maps.googleapis.com/maps/api/geocode/json"
     params = {"address": address, "key": api_key}
     response = requests.get(geocode_url, params=params).json()
 
     if response["status"] == "OK":
-        return response["results"][0]["formatted_address"]
+        result = response["results"][0]
+        formatted_address = result["formatted_address"]
+        location = result["geometry"]["location"]
+        coordinates = [location["lat"], location["lng"]]
+        return formatted_address, coordinates
     else:
         st.error(f"Erro ao buscar o endereço: {response['status']}")
         return None
@@ -61,6 +66,14 @@ def generate_google_maps_url(route):
     base_url = "https://www.google.com/maps/dir/"
     encoded_route = "/".join(route)
     return base_url + encoded_route
+
+# Função para criar o mapa com Folium
+def create_map(route, locations):
+    route_map = folium.Map(location=locations[0], zoom_start=13)
+    for i, (address, coord) in enumerate(zip(route, locations)):
+        folium.Marker(location=coord, popup=f"{i + 1}: {address}").add_to(route_map)
+    folium.PolyLine(locations, color="blue", weight=2.5, opacity=1).add_to(route_map)
+    return route_map
 
 # Configuração da página
 st.title("Calculador de Rota com Dijkstra")
@@ -102,11 +115,13 @@ if st.button("Calcular Rota"):
     else:
         # Obter endereços formatados
         addresses = [start_point] + intermediate_points + [end_point]
-        formatted_addresses = [get_address_from_api(addr, api_key) for addr in addresses]
+        formatted_data = [get_address_from_api(addr, api_key) for addr in addresses]
 
-        if None in formatted_addresses:
+        if any(data is None for data in formatted_data):
             st.error("Erro ao processar os endereços. Verifique os valores inseridos.")
         else:
+            formatted_addresses, locations = zip(*formatted_data)
+
             # Construir o grafo com a matriz de distâncias
             graph = get_distance_matrix(formatted_addresses, api_key)
             if graph:
@@ -125,6 +140,13 @@ if st.button("Calcular Rota"):
                 st.write("### Melhor Rota:")
                 st.write(" -> ".join(shortest_route))
                 st.write(f"**Distância Total:** {shortest_distance} metros")
+
+                # Criar e exibir o mapa
+                route_locations = [locations[formatted_addresses.index(address)] for address in shortest_route]
+                route_map = create_map(shortest_route, route_locations)
+
+                # Renderizar o mapa com st_folium
+                st_folium(route_map, width=700, height=500, returned_objects=[])
 
                 # Gerar URL do Google Maps
                 maps_url = generate_google_maps_url(shortest_route)

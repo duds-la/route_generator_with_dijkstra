@@ -4,3 +4,4 @@ streamlit
 googlemaps
 networkx
 pandas
+folium streamlit-folium
